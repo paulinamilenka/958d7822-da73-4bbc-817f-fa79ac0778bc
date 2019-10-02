@@ -6,20 +6,25 @@ import matplotlib.pyplot as plt
 class Cashflow(object):
     """Cashflow
     Create a cashflow-class definition.
-    
-    Attributes: 
+
+    Attributes:
         * amount - monetary amount at time t.
-        * t - integer representing time. 
-        
+        * t - integer representing time.
+
     Methods:
         * present_value(self, interest_rate) - returns the present value of the cashfow given a interest-rate.
     """
+    def _init_(self,amount,t):
+        self.amount = amount
+        self.t = t
+    def present_value(self,interest_rate):
+        return self.amount * (1-(1+interest_rate) ** -(self.t))/ interest_rate
 
 
 class InvestmentProject(object):
     RISK_FREE_RATE = 0.08
 
-    def __init__(self, cashflows, hurdle_rate=RISK_FREE_RATE):
+    def _init_(self, cashflows, hurdle_rate=RISK_FREE_RATE):
         cashflows_positions = {str(flow.t): flow for flow in cashflows}
         self.cashflow_max_position = max((flow.t for flow in cashflows))
         self.cashflows = []
@@ -36,14 +41,22 @@ class InvestmentProject(object):
     def internal_return_rate(self):
         return np.irr([flow.amount for flow in self.cashflows])
 
-    def plot(self, show=False):
+    def plot(filepath, show=True):
         """Plot Cashflows
         The `plot` function creates a bar plot (fig) where x=t and y=amount.
         :param show: boolean that represents whether to run `plt.show()` or not.
         :return: matplotlib figure object.
         """
         # TODO: implement plot method
-        raise NotImplementedError
+
+        data = pd.read_csv(filepath)
+        plot = data.plot.bar(x="t", y="amount")
+        fig = plot.get_figure()
+        plt.show()
+        return fig
+
+
+
 
 
     def net_present_value(self, interest_rate=None):
@@ -54,6 +67,8 @@ class InvestmentProject(object):
         """
         # TODO: implement net_present_value method
         raise NotImplementedError
+
+
 
     def equivalent_annuity(self, interest_rate=None):
         """ Equivalent Annuity
@@ -70,4 +85,6 @@ class InvestmentProject(object):
             "hurdle-rate": self.hurdle_rate,
             "net-present-value": self.net_present_value(interest_rate=None),
             "equivalent-annuity": self.equivalent_annuity(interest_rate=None)
-        }
+            }
+
+

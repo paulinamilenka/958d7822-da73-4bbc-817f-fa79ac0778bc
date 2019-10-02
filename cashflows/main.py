@@ -1,11 +1,11 @@
 import fire
-import json 
+import json
 
 from util import InvestmentProject
 
 
 class Main(object):
-    
+
     @staticmethod
     def describe_investment(filepath, hurdle_rate=None):
         investment_project = InvestmentProject.from_csv(filepath=filepath, hurdle_rate=hurdle_rate)
@@ -13,9 +13,14 @@ class Main(object):
         print(json.dumps(description, indent=4))
 
     @staticmethod
-    def plot_investment(filepath, save="", show=False):
+    def plot_investment(filepath, save="", show=""):
         # TODO: implement plot_investment method
-        raise NotImplementedError
+        if show:
+            fig = InvestmentProject.plot(filepath=filepath,show=show)
+            if save:
+                fig.savefig(".png")
+
+
 
 if __name__ == "__main__":
     fire.Fire(Main)
