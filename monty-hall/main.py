@@ -33,8 +33,22 @@ class Main(object):
     @staticmethod
     def play_multiple_games(strategy="random", times=100, opts=3, save=""):
         # TODO: implement multiple games
-        raise NotImplementedError
+        car = 0
+        goat = 0
 
+        game =[]
+        for i in range(times):
+            game.append(play_random_game(number_of_options=opts,strategy=strategy))
+            if game[i] == "goat":
+                goat += 1
+            else:
+                car += 1
+        table = {"Game-Resul":["Car","Goat"],
+                 "Count": [car,goat]}
+        df = pd.DataFrame(table)
+        print(df)
+        if save:
+            df.to_csv(save)
 
 if __name__ == "__main__":
     fire.Fire(Main)

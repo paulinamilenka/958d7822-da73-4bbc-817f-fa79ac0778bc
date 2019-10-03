@@ -118,8 +118,12 @@ class Guest(object):
         :param options: a dictionary containing door_name:door_obj
         :return: the key of the selected option (i.e., door_name)
         """
-        # TODO: implement 'change' strategy
-        raise NotImplementedError
+        option = self.get_latest_choice()
+        option_change = random.choice([door_name for door_name in options.keys()])
+        if option == option_change:
+            while option_change == option:
+                option_change = random.choice([door_name for door_name in options.keys()])
+        return  option_change
 
     def choose(self, options, strategy):
         if strategy == Guest.Strategy.RANDOM:
