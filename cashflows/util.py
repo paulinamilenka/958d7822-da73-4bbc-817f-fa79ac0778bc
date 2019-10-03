@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+
 class Cashflow(object):
     """Cashflow
     Create a cashflow-class definition.
